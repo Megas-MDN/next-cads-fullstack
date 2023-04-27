@@ -11,13 +11,17 @@ const Card = ({ styles, card, user, fechData }) => {
     const token = window.localStorage.getItem('token');
 
     if (edit) {
-      await fetch(`/api/posts/${user}/${card.id}`, {
-        method: 'PUT',
-        body: JSON.stringify({ title: input, body: text }),
-        headers: {
-          authorization: token,
+      await fetch(
+        `/api/posts/${user}/${card.id}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify({ title: input, body: text }),
+          headers: {
+            authorization: token,
+          },
         },
-      });
+        { cache: 'no-store' }
+      );
       setEdit(false);
       fechData();
     } else {
@@ -31,12 +35,16 @@ const Card = ({ styles, card, user, fechData }) => {
       setText(card.body);
       setEdit(false);
     } else {
-      await fetch(`/api/posts/${user}/${card.id}`, {
-        method: 'DELETE',
-        headers: {
-          authorization: token,
+      await fetch(
+        `/api/posts/${user}/${card.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            authorization: token,
+          },
         },
-      });
+        { cache: 'no-store' }
+      );
       setLoging(true);
       fechData();
     }

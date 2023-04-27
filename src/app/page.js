@@ -9,7 +9,9 @@ export default function Home() {
   const [user, setUser] = useState(0);
 
   const fechData = async () => {
-    const data = await (await fetch('/api/posts')).json();
+    const data = await (
+      await fetch('/api/posts', { cache: 'no-store' })
+    ).json();
     setCards(data);
   };
 

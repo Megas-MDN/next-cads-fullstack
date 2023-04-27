@@ -14,10 +14,14 @@ const Header = ({ styles, fetchGlobalData, user, setUser }) => {
 
   const fechData = async (id) => {
     const userToLogin = await (
-      await fetch('/api/login', {
-        method: 'POST',
-        body: JSON.stringify({ password: '123456-' + id, userId: id }),
-      })
+      await fetch(
+        '/api/login',
+        {
+          method: 'POST',
+          body: JSON.stringify({ password: '123456-' + id, userId: id }),
+        },
+        { cache: 'no-store' }
+      )
     ).json();
     window.localStorage.setItem('token', userToLogin.token);
     setUser(id);
@@ -38,12 +42,16 @@ const Header = ({ styles, fetchGlobalData, user, setUser }) => {
     setUser(0);
     const token = window.localStorage.getItem('token');
     await (
-      await fetch(`/api/posts/${user}`, {
-        method: 'DELETE',
-        headers: {
-          authorization: token,
+      await fetch(
+        `/api/posts/${user}`,
+        {
+          method: 'DELETE',
+          headers: {
+            authorization: token,
+          },
         },
-      })
+        { cache: 'no-store' }
+      )
     ).json();
     fetchGlobalData();
   };
