@@ -1,9 +1,10 @@
-import postList from '../../posts.json';
+import readFile from '../../../../../utils/index';
 import fs from 'fs/promises';
 import jwt from 'jsonwebtoken';
 const secret = process.env.JWT_KEY || 'seusecretdetoken';
 
 export async function PUT(res, { params }) {
+  const postList = await readFile();
   try {
     const { title, body } = await res.json();
     const token = res.headers.get('authorization');
@@ -33,6 +34,7 @@ export async function PUT(res, { params }) {
 }
 
 export async function DELETE(res, { params }) {
+  const postList = await readFile();
   const token = res.headers.get('authorization');
   try {
     const decoded = jwt.verify(token, secret);

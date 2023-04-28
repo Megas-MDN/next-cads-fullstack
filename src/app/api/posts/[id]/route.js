@@ -1,13 +1,15 @@
-import postList from '../posts.json';
 import fs from 'fs/promises';
 import jwt from 'jsonwebtoken';
 const secret = process.env.JWT_KEY || 'seusecretdetoken';
+import readFile from '../../../../utils/index';
 
-export function GET(_res, { params: { id } }) {
+export async function GET(_res, { params: { id } }) {
+  const postList = await readFile();
   return Response.json(postList.filter((post) => +post.userId === +id));
 }
 
 export async function DELETE(res, { params: { id } }) {
+  const postList = await readFile();
   const token = res.headers.get('authorization');
   try {
     const decoded = jwt.verify(token, secret);
